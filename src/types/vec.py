@@ -57,7 +57,7 @@ class Vec:
 		return Vec(-self.x, -self.y)
 
 	def __bool__(self):
-		return self.norm == 0
+		return self.x == 0 and self.y == 0
 
 	def __iter__(self):
 		return iter((self.x, self.y))

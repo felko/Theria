@@ -35,10 +35,10 @@ class Animation:
 		"""
 
 		if path[-1] not in (os.sep, '/'):
-			path += '/'
+			path += os.sep
 
 		frames = list()
-		for frame_path in glob.iglob(path + '[0-9]+.png'):
+		for frame_path in glob.iglob(path + '[0-9].png'):
 			frame = sf.Texture.from_file(frame_path)
 			frames.append(frame)
 

@@ -31,7 +31,6 @@ class Level:
 			self.move(entity)
 
 	def move(self, entity):
-		print(self.player.position)
 		if not self.region[tuple(entity.position + entity.movement)].block.solid:
 			entity.position += entity.movement
 
