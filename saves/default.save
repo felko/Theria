@@ -1,0 +1,8 @@
+{
+    "level": {
+        "player": {
+            "x": 6,
+            "y": 8},
+        "region": "src/assets/region/test.reg"
+    }
+}
