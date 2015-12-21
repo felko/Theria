@@ -49,12 +49,15 @@ class Entity:
 		:return: A sf.Texture object
 		"""
 
-		state = self.get_anim_state()
-
-		if isinstance(self.animation, Animation):
-			return self.animation.get_frame(self.time)
-		elif isinstance(self.animation, StateAnim):
-			return self.animation.get_frame(state, self.time)
+		if isinstance(self.animation, sf.Texture):
+			return self.animation
+		else:
+			state = self.get_anim_state()
+			
+			if isinstance(self.animation, Animation):
+				return self.animation.get_frame(self.time)
+			elif isinstance(self.animation, StateAnim):
+				return self.animation.get_frame(state, self.time)
 
 	def get_sprite(self):
 		"""
