@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+__all__ = ['StateAnim']
+
 import os
 from sfml import sf
 
 from .animation import Animation
+from ...helper import flatten_dict
 
 
 class StateAnim:
@@ -52,42 +55,7 @@ class StateAnim:
 		:return: MultiAnimation object
 		"""
 
-		def load_mapping(path):
-			mapping = dict()
-
-			for sub in os.listdir(path):
-				state_name = os.path.basename(sub)
-				sub_path = os.path.join(path, sub)
-
-				if os.path.isdir(sub_path):
-					if any(os.path.isdir(os.path.join(sub_path, d)) for d in os.listdir(sub_path)):
-						mapping[state_name] = load_mapping(sub_path)
-					elif all(name.split('.')[0].isdigit() for name in map(os.path.basename, os.listdir(sub_path))):
-						mapping[state_name] = Animation.load_from_dir(sub_path)
-					else:
-						mapping[state_name] = load_mapping(sub_path)
-				else:
-					mapping[state_name.split('.')[0]] = sf.Texture.from_file(sub_path)
-
-			return mapping
-
-		def flatten_dict(dct):
-			flattened = dict()
-
-			for k, v in dct.items():
-				if isinstance(v, dict):
-					sub_dct = flatten_dict(v)
-					for subk, subv in sub_dct.items():
-						if isinstance(subk, tuple):
-							flattened[(k,) + subk] = subv
-						else:
-							flattened[k, subk] = subv
-				else:
-					flattened[k] = v
-
-			return flattened
-
-		nested_mapping = load_mapping(path)
+		nested_mapping = _load_mapping(path)
 		flattened_mapping = flatten_dict(nested_mapping)
 
 		return cls(flattened_mapping, default)
@@ -101,3 +69,30 @@ class StateAnim:
 				return anim
 		else:
 			self.state = state
+
+
+def _load_mapping(path):
+	"""
+	Recursive helper function for class method StateAnim.load_from_dir.
+
+	:param path:
+	:return:
+	"""
+
+	mapping = dict()
+
+	for sub in os.listdir(path):
+		state_name = os.path.basename(sub)
+		sub_path = os.path.join(path, sub)
+
+		if os.path.isdir(sub_path):
+			if any(os.path.isdir(os.path.join(sub_path, d)) for d in os.listdir(sub_path)):
+				mapping[state_name] = _load_mapping(sub_path)
+			elif all(name.split('.')[0].isdigit() for name in map(os.path.basename, os.listdir(sub_path))):
+				mapping[state_name] = Animation.load_from_dir(sub_path)
+			else:
+				mapping[state_name] = _load_mapping(sub_path)
+		else:
+			mapping[state_name.split('.')[0]] = sf.Texture.from_file(sub_path)
+
+	return mapping
