@@ -67,9 +67,13 @@ class Block:
 			action = data.get('action', None)
 
 			if action is not None:
-				block.on_enter = Action.load_json(action['on_enter'])
-				block.on_exit = Action.load_json(action['on_exit'])
-				block.on_action = Action.load_json(action['on_action'])
-				block.on_stumble = Action.load_json(action['on_stumble'])
+				if 'on_enter' in action:
+					block.on_enter = Action.load_json(action['on_enter'])
+				if 'on_exit' in action:
+					block.on_exit = Action.load_json(action['on_exit'])
+				if 'on_action' in action:
+					block.on_action = Action.load_json(action['on_action'])
+				if 'on_stumble' in action:
+					block.on_stumble = Action.load_json(action['on_stumble'])
 
 			return block
