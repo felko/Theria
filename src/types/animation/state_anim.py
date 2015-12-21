@@ -61,6 +61,14 @@ class StateAnim:
 		return cls(flattened_mapping, default)
 
 	def get_frame(self, state, dt):
+		"""
+		Return the frame at a given state and time.
+
+		:param state: The state of the entity
+		:param dt: The time between the current and the previous frame
+		:return: A sf.Texture object
+		"""
+
 		if state == self.state:
 			anim = self.frame_mapping[state]
 			if isinstance(anim, Animation):

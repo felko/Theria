@@ -17,16 +17,38 @@ class Entity:
 		self.time = sf.Time.ZERO
 
 	def update(self, dt):
+		"""
+		Updates the entity's clock.
+
+		:param dt: Time between the current and the previous frame.
+		"""
+
 		self.time += dt
 
 	def move(self, direction):
+		"""
+		Performs an orthogonal movement on the entity.
+
+		:param direction: A Direction object.
+		"""
+
 		self.movement = direction.value
 
 	def get_anim_state(self):
+		"""
+		Returnsthe current state of the entity.
+		"""
+
 		raise NotImplementedError('Class {!r} does not implement method'
 						' get_anim_state'.format(self.__class__.__name__))
 
 	def get_texture(self):
+		"""
+		Return the current texture of the entity.
+
+		:return: A sf.Texture object
+		"""
+
 		state = self.get_anim_state()
 
 		if isinstance(self.animation, Animation):
@@ -35,11 +57,24 @@ class Entity:
 			return self.animation.get_frame(state, self.time)
 
 	def get_sprite(self):
+		"""
+		Return the sprite of the entity, with the right position in pixels and
+		the current texture.
+
+		:return: A sf.Sprite object
+		"""
+
 		texture = self.get_texture()
 		sprite = sf.Sprite(texture)
 		sprite.position = self.position * TILE_SIZE
 		return sprite
 
 	def draw(self, target):
+		"""
+		Draw the entity to the given render window
+
+		:param target: The sf.RenderWindow object to draw on
+		"""
+
 		sprite = self.get_sprite()
 		target.draw(sprite)

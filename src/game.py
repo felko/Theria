@@ -23,6 +23,13 @@ class Game:
 
 	@classmethod
 	def load_from_file(cls, path):
+		"""
+		Load a game from a *.save file.
+
+		:param path: The path to the save file
+		:return: The loaded Game instance
+		"""
+
 		with open(path) as file:
 			save = json.load(file)
 
@@ -31,6 +38,12 @@ class Game:
 			return cls(level)
 
 	def update(self, dt):
+		"""
+		Performs action depending on the user input and updates the level.
+
+		:param dt: Time between the current and the previous frame
+		"""
+
 		for event in self.window.events:
 
 			if isinstance(event, sf.ResizeEvent):

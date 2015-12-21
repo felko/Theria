@@ -18,11 +18,25 @@ class Level:
 
 	@classmethod
 	def load_json(cls, data):
+		"""
+		Loads a JSON-formatted object to a Level.
+
+		:param data: dictionary
+		:return: The loaded Level object.
+		"""
+
 		region = Region.load_from_file(data['region'])
 		player = Player.load_json(data['player'])
 		return cls(region, player)
 
 	def update(self, dt):
+		"""
+		Updates each entity given the time between the current and the previous
+		frame.
+
+		:param dt: Time between the current and the previous frame
+		"""
+
 		self.player.update(dt)
 		self.move(self.player)
 
@@ -31,12 +45,24 @@ class Level:
 			self.move(entity)
 
 	def move(self, entity):
+		"""
+		Apply to each entity their movement, taking account of collisions.
+
+		:param entity: The Entity instance to move
+		"""
+
 		if not self.region[tuple(entity.position + entity.movement)].block.solid:
 			entity.position += entity.movement
 
 		entity.movement = Vec(0, 0)
 
 	def draw(self, target):
+		"""
+		Draws the region and the entities to the given render window.
+
+		:param target: sf.RenderWindow to draw on
+		"""
+
 		coords = itertools.product(range(self.region.width), range(self.region.height))
 
 		for x, y in coords:
