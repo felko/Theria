@@ -12,7 +12,6 @@ PLAYER_ANIM = StateAnim.load_from_dir('src/assets/sprites/player')
 
 class Player(Character):
 	def __init__(self, pos):
-		self.facing = Direction.down
 		super().__init__(pos, PLAYER_ANIM, Vec(0, -3))
 
 	@classmethod
@@ -25,11 +24,6 @@ class Player(Character):
 			return PlayerMovement.walking.name, self.facing.name
 		else:
 			return PlayerMovement.idle.name, self.facing.name
-		
-	def move(self, direction):
-		self.movement = direction.value
-		self.facing = direction
-		print(self.position)
 
 
 class PlayerMovement(Enum):
