@@ -35,7 +35,6 @@ class Game:
 
 			if isinstance(event, sf.ResizeEvent):
 				self.window.view.reset((0, 0, event.size.x, event.size.y))
-				break
 			elif isinstance(event, sf.CloseEvent):
 				self.running = False
 				break
@@ -52,14 +51,6 @@ class Game:
 						self.level.player.move(Direction.right)
 					elif event.code == sf.Keyboard.LEFT:
 						self.level.player.move(Direction.left)
-
-			elif isinstance(event, sf.KeyEvent):
-				if event.released:
-					if event.code in (sf.Keyboard.UP,
-									  sf.Keyboard.DOWN,
-									  sf.Keyboard.RIGHT,
-									  sf.Keyboard.LEFT):
-						self.level.player.movement = Direction.null
 
 		self.level.update(dt)
 

@@ -25,6 +25,10 @@ class Player(Character):
 		else:
 			return PlayerMovement.idle.name, self.facing.name
 
+	def move(self, direction):
+		super().move(direction)
+		print(direction, self.position)
+
 
 class PlayerMovement(Enum):
 	idle = 0
