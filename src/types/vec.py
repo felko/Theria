@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from math import sqrt, log10
-from sfml import sf
+from math import sqrt, sin, cos, atan2
 
 from ..constants import *
 
@@ -23,6 +22,12 @@ class Vec:
 	@classmethod
 	def link(cls, a, b):
 		return Vec(b.x - a.x, b.y - a.y)
+
+	@classmethod
+	def polar(cls, norm, theta):
+		v = Vec(0, 0)
+		v.norm = norm
+		v.theta = theta
 
 	def __add__(self, other):
 		dx, dy = other
@@ -88,3 +93,12 @@ class Vec:
 	@unit.setter
 	def unit(self, value):
 		self.x, self.y = value.unit * self.norm
+
+	@property
+	def theta(self):
+		return atan2(self.y, self.y)
+
+	@theta.setter
+	def theta(self, value):
+		self.x = self.norm * cos(value)
+		self.y = self.norm * sin(value)
