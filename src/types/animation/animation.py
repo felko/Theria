@@ -48,6 +48,13 @@ class Animation:
 			return cls(frames, interval)
 
 	def get_frame(self, dt):
+		"""
+		Returns the texture of the entity.
+
+		:param dt: The time between the current and the previous frame.
+		:return: A sf.Texture instance
+		"""
+
 		self.time += dt
 
 		if self.time > self.interval:
