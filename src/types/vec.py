@@ -58,17 +58,38 @@ class Vec:
 		else:
 			return Vec(self.x // other, self.y // other)
 
+	def __radd__(self, other):
+		dx, dy = other
+		return Vec(self.x + dx, self.y + dy)
+
+	def __rsub__(self, other):
+		dx, dy = other
+		return Vec(self.x - dx, self.y - dy)
+
+	def __rmul__(self, other):
+		if isinstance(other, (Vec, tuple)):
+			kx, ky = other
+			return Vec(self.x * kx, self.y * ky)
+		else:
+			return Vec(self.x * other, self.y * other)
+
 	def __neg__(self):
 		return Vec(-self.x, -self.y)
 
 	def __bool__(self):
-		return self.x == 0 and self.y == 0
+		return bool(self.norm)
 
 	def __iter__(self):
 		return iter((self.x, self.y))
 
 	def __hash__(self):
 		return hash((self.x, self.y))
+
+	def __lt__(self, other):
+		return self.norm < other.norm
+
+	def __gt__(self, other):
+		return self.norm > other.norm
 
 	@property
 	def norm(self):

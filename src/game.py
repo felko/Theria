@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import time
 import json
 
 from sfml import sf
@@ -74,7 +75,10 @@ class Game:
 
 	def start(self):
 		self.running = True
+		t = time.time()
 
 		while self.running:
-			self.update(self.clock.restart())
+			dt = time.time() - t
+			t = time.time()
+			self.update(dt)
 			self.draw()

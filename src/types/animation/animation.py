@@ -12,7 +12,7 @@ class Animation:
 	An animated texture.
 	"""
 
-	def __init__(self, frames, interval=sf.Time.ZERO):
+	def __init__(self, frames, interval=0):
 		"""
 		:param frames: Iterable of sf.Texture objects
 		:param interval: Time between two frames (default: 0.0s)
@@ -21,7 +21,7 @@ class Animation:
 		self.frames = frames
 		self.interval = interval
 		self.index = 0
-		self.time = sf.Time.ZERO
+		self.time = 0
 
 	@classmethod
 	def load_from_dir(cls, path, interval=None):
@@ -42,7 +42,7 @@ class Animation:
 			frame = sf.Texture.from_file(frame_path)
 			frames.append(frame)
 
-		if interval is not None:
+		if interval is None:
 			return cls(frames)
 		else:
 			return cls(frames, interval)
@@ -58,7 +58,7 @@ class Animation:
 		self.time += dt
 
 		if self.time > self.interval:
-			self.time = sf.Time.ZERO
+			self.time = 0
 			self.index += 1
 			self.index %= len(self.frames)
 

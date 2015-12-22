@@ -13,9 +13,17 @@ class Entity:
 	def __init__(self, pos, anim, texture_offset=Vec(0, 0)):
 		self.position = pos
 		self.animation = anim
-		self.movement = idle
+		self.movement = Vec(0, 0)
 		self.texture_offset = texture_offset
-		self.time = sf.Time.ZERO
+		self.time = 0
+
+	@property
+	def movement(self):
+		return self._movement
+
+	@movement.setter
+	def movement(self, value):
+		self._movement = Vec(*value)
 
 	def update(self, dt):
 		"""
@@ -33,7 +41,7 @@ class Entity:
 		:param direction: A Direction object.
 		"""
 
-		self.movement = Movement(direction.value)
+		self.movement = direction.value
 
 	def get_anim_state(self):
 		"""
@@ -41,7 +49,7 @@ class Entity:
 		"""
 
 		raise NotImplementedError('Class {!r} does not implement method'
-						' get_anim_state'.format(self.__class__.__name__))
+		                          ' get_anim_state'.format(self.__class__.__name__))
 
 	def get_texture(self):
 		"""

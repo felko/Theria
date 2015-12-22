@@ -69,14 +69,13 @@ class StateAnim:
 		:return: A sf.Texture object
 		"""
 
-		if state == self.state:
-			anim = self.frame_mapping[state]
-			if isinstance(anim, Animation):
-				return anim.get_frame(dt)
-			else:
-				return anim
+		self.state = state
+
+		anim = self.frame_mapping[state]
+		if isinstance(anim, Animation):
+			return anim.get_frame(dt)
 		else:
-			self.state = state
+			return anim
 
 
 def _load_mapping(path):

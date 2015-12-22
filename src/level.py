@@ -50,14 +50,20 @@ class Level:
 		Apply to each entity their movement, taking account of collisions.
 
 		:param entity: The Entity instance to move
+		:param dt: The seconds between the current and the previous frame
 		"""
 
-		entity.movement.copy().apply(entity.position.copy(), dt)
+		new_pos = entity.position + entity.movement * dt
 
-		if not self.region[tuple(entity.position)].block.solid:
-			entity.movement.apply(entity.position, dt)
-		else:
-			entity.movement.terminate()
+		try:
+			if not self.region[tuple(new_pos)].block.solid:
+				entity.position = new_pos
+				entity.movement -= dt * entity.movement
+				entity.movement = max(Vec(0, 0), entity.movement)
+			else:
+				entity.movement = Vec(0, 0)
+		except IndexError:
+			pass
 
 	def draw(self, target):
 		"""

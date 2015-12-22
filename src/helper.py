@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+from sfml import sf
+
 
 def sign(x):
 	if x < 0:
@@ -26,3 +28,9 @@ def flatten_dict(dct):
 			flattened[k] = v
 
 	return flattened
+
+
+def time(seconds=0, milliseconds=0):
+	t = sf.Time()
+	t.milliseconds = milliseconds + seconds * 1000
+	return t

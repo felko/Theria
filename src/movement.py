@@ -3,6 +3,7 @@
 
 from sfml import sf
 
+from .helper import time
 from .types import *
 
 
@@ -11,20 +12,18 @@ class Movement:
 	Linear interpolation movement between two given positions.
 	"""
 
-	def __init__(self, vec, duration=sf.Time.ZERO):
+	def __init__(self, vec, duration=time(seconds=1)):
 		if duration == sf.Time.ZERO:
-			self.speed = Vec(*vec)
-			self.duration = sf.Time()
-			self.duration.microseconds = 1
-		else:
-			self.speed = Vec(*vec) / duration.seconds
-			self.duration = duration
+			self.duration = time(seconds=1)
+
+		self.speed = Vec(*vec) / duration.milliseconds
+		self.duration = duration
 
 	def __repr__(self):
 		return '<Movement {} ending in {}>'.format(self.speed, self.duration)
 
 	@classmethod
-	def link(cls, start, dest, duration=sf.Time.ZERO):
+	def link(cls, start, dest, duration=None):
 		"""
 		Creates a Movement object from two points.
 
@@ -35,7 +34,11 @@ class Movement:
 		"""
 
 		delta = Vec(*dest) - Vec(*start)
-		return cls(delta, duration)
+
+		if duration is None:
+			return cls(delta)
+		else:
+			return cls(delta, duration)
 
 	def __bool__(self):
 		return bool(self.speed)
@@ -49,9 +52,8 @@ class Movement:
 		:param dt: The time between the current and the previous frame
 		"""
 
-		if self.duration:
-			self.duration = max(self.duration - dt, sf.Time.ZERO)
-			pos += self.speed * self.duration.seconds
+		pos.x, pos.y = pos + self.speed * self.duration.milliseconds
+		self.duration = max(self.duration - dt, sf.Time.ZERO)
 
 	def terminate(self):
 		"""
@@ -63,7 +65,7 @@ class Movement:
 
 	def copy(self):
 		mov = Movement(Vec(0, 0))
-		mov.speed = self.speed
+		mov.speed = self.speed.copy()
 		mov.duration = self.duration
 		return mov
 
