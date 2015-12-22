@@ -7,6 +7,10 @@ from .types import *
 
 
 class Movement:
+	"""
+	Linear interpolation movement between two given positions.
+	"""
+
 	def __init__(self, vec, duration=sf.Time.ZERO):
 		if duration == sf.Time.ZERO:
 			self.speed = Vec(*vec)
@@ -21,6 +25,15 @@ class Movement:
 
 	@classmethod
 	def link(cls, start, dest, duration=sf.Time.ZERO):
+		"""
+		Creates a Movement object from two points.
+
+		:param start: The starting position
+		:param dest: The destination
+		:param duration: The duration of the movement
+		:return: A Movement object
+		"""
+
 		delta = Vec(*dest) - Vec(*start)
 		return cls(delta, duration)
 
