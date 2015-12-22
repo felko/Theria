@@ -5,6 +5,7 @@ import itertools
 
 from sfml import sf
 
+import src.movement as movement
 from .region import Region
 from .entity.character.player import Player
 from .types import *
@@ -38,23 +39,25 @@ class Level:
 		"""
 
 		self.player.update(dt)
-		self.move(self.player)
+		self.move(self.player, dt)
 
 		for entity in self.entities:
 			entity.update(dt)
-			self.move(entity)
+			self.move(entity, dt)
 
-	def move(self, entity):
+	def move(self, entity, dt):
 		"""
 		Apply to each entity their movement, taking account of collisions.
 
 		:param entity: The Entity instance to move
 		"""
 
-		if not self.region[tuple(entity.position + entity.movement)].block.solid:
-			entity.position += entity.movement
+		entity.movement.copy().apply(entity.position.copy(), dt)
 
-		entity.movement = Vec(0, 0)
+		if not self.region[tuple(entity.position)].block.solid:
+			entity.movement.apply(entity.position, dt)
+		else:
+			entity.movement.terminate()
 
 	def draw(self, target):
 		"""

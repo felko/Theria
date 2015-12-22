@@ -3,6 +3,7 @@
 
 from sfml import sf
 
+from ..movement import *
 from ..types import *
 from ..types.animation import *
 from ..constants import *
@@ -12,7 +13,7 @@ class Entity:
 	def __init__(self, pos, anim, texture_offset=Vec(0, 0)):
 		self.position = pos
 		self.animation = anim
-		self.movement = Vec(0, 0)
+		self.movement = idle
 		self.texture_offset = texture_offset
 		self.time = sf.Time.ZERO
 
@@ -32,7 +33,7 @@ class Entity:
 		:param direction: A Direction object.
 		"""
 
-		self.movement = direction.value
+		self.movement = Movement(direction.value)
 
 	def get_anim_state(self):
 		"""
@@ -53,7 +54,7 @@ class Entity:
 			return self.animation
 		else:
 			state = self.get_anim_state()
-			
+
 			if isinstance(self.animation, Animation):
 				return self.animation.get_frame(self.time)
 			elif isinstance(self.animation, StateAnim):

@@ -102,3 +102,6 @@ class Vec:
 	def theta(self, value):
 		self.x = self.norm * cos(value)
 		self.y = self.norm * sin(value)
+
+	def copy(self):
+		return Vec(self.x, self.y)
