@@ -21,6 +21,7 @@ class Game:
 		self.level = level
 		self.clock = sf.Clock()
 		self.running = False
+		self.pressed_keys = set()
 
 	@classmethod
 	def load_from_file(cls, path):
@@ -38,13 +39,7 @@ class Game:
 
 			return cls(level)
 
-	def update(self, dt):
-		"""
-		Performs action depending on the user input and updates the level.
-
-		:param dt: Time between the current and the previous frame
-		"""
-
+	def handle_events(self):
 		for event in self.window.events:
 
 			if isinstance(event, sf.ResizeEvent):
@@ -54,17 +49,27 @@ class Game:
 				break
 			elif isinstance(event, sf.KeyEvent):
 				if event.pressed:
-					if event.code == sf.Keyboard.ESCAPE:
-						self.running = False
-						break
-					elif event.code == sf.Keyboard.UP:
-						self.level.player.move(Direction.up)
-					elif event.code == sf.Keyboard.DOWN:
-						self.level.player.move(Direction.down)
-					elif event.code == sf.Keyboard.RIGHT:
-						self.level.player.move(Direction.right)
-					elif event.code == sf.Keyboard.LEFT:
-						self.level.player.move(Direction.left)
+					self.pressed_keys.add(event.code)
+				elif event.released:
+					self.pressed_keys.remove(event.code)
+
+	def update(self, dt):
+		"""
+		Performs action depending on the user input and updates the level.
+
+		:param dt: Time between the current and the previous frame
+		"""
+
+		self.handle_events()
+
+		if sf.Keyboard.UP in self.pressed_keys:
+			self.level.player.move(Direction.up)
+		elif sf.Keyboard.DOWN in self.pressed_keys:
+			self.level.player.move(Direction.down)
+		elif sf.Keyboard.RIGHT in self.pressed_keys:
+			self.level.player.move(Direction.right)
+		elif sf.Keyboard.LEFT in self.pressed_keys:
+			self.level.player.move(Direction.left)
 
 		self.level.update(dt)
 
