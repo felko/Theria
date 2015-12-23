@@ -24,10 +24,10 @@ class Game:
 			'Theria',
 			sf.Style.DEFAULT
 		)
-		self.view = sf.View()
-		self.view.size = RESOLUTION
-		self.view.center = self.level.player.rect.center * TILE_SIZE
-		self.window.view = self.view
+		view = sf.View()
+		view.size = RESOLUTION
+		view.center = self.level.player.rect.center * TILE_SIZE
+		self.window.view = view
 
 	@classmethod
 	def load_from_file(cls, path):
@@ -49,7 +49,8 @@ class Game:
 		for event in self.window.events:
 
 			if isinstance(event, sf.ResizeEvent):
-				self.window.view.reset((0, 0, event.size.x, event.size.y))
+				self.window.view.size = event.size
+				self.window.view.zoom(1)
 			elif isinstance(event, sf.CloseEvent):
 				self.running = False
 				break
@@ -78,7 +79,7 @@ class Game:
 			self.level.player.move(Direction.left)
 
 		self.level.update(dt)
-		self.view.center = self.level.player.rect.center * TILE_SIZE
+		self.window.view.center = self.level.player.rect.center * TILE_SIZE
 
 	def draw(self):
 		self.window.clear()
