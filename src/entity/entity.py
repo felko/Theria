@@ -20,6 +20,10 @@ class Entity:
 		if isinstance(anim, StateAnim):
 			self.animation.state = self.get_anim_state()
 
+	@property
+	def rect(self):
+		return Rect(self.position, (1, 1))
+
 	def update(self, dt):
 		"""
 		Updates the entity's clock.

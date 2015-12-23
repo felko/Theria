@@ -13,15 +13,21 @@ from .constants import *
 
 
 class Game:
-	window = sf.RenderWindow(sf.VideoMode(*RESOLUTION),
-							 'Theria',
-							 sf.Style.DEFAULT)
 
 	def __init__(self, level):
 		self.level = level
 		self.clock = sf.Clock()
 		self.running = False
 		self.pressed_keys = set()
+		self.window = sf.RenderWindow(
+			sf.VideoMode(*RESOLUTION),
+			'Theria',
+			sf.Style.DEFAULT
+		)
+		self.view = sf.View()
+		self.view.size = RESOLUTION
+		self.view.center = self.level.player.rect.center * TILE_SIZE
+		self.window.view = self.view
 
 	@classmethod
 	def load_from_file(cls, path):
@@ -72,6 +78,7 @@ class Game:
 			self.level.player.move(Direction.left)
 
 		self.level.update(dt)
+		self.view.center = self.level.player.rect.center * TILE_SIZE
 
 	def draw(self):
 		self.window.clear()
