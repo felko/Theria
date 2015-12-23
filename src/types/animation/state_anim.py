@@ -103,3 +103,4 @@ def _load_mapping(path):
 			mapping[state_name.split('.')[0]] = sf.Texture.from_file(sub_path)
 
 	return mapping
+

@@ -76,6 +76,12 @@ class Vec:
 	def __neg__(self):
 		return Vec(-self.x, -self.y)
 
+	def __int__(self):
+		return Vec(int(self.x), int(self.y))
+
+	def __round__(self, n=0):
+		return Vec(round(self.x, n), round(self.y, n))
+
 	def __bool__(self):
 		return bool(self.norm)
 

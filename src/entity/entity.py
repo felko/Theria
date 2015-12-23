@@ -13,17 +13,9 @@ class Entity:
 	def __init__(self, pos, anim, texture_offset=Vec(0, 0)):
 		self.position = pos
 		self.animation = anim
-		self.movement = Vec(0, 0)
+		self.movement = idle
 		self.texture_offset = texture_offset
 		self.time = 0
-
-	@property
-	def movement(self):
-		return self._movement
-
-	@movement.setter
-	def movement(self, value):
-		self._movement = Vec(*value)
 
 	def update(self, dt):
 		"""
@@ -41,7 +33,8 @@ class Entity:
 		:param direction: A Direction object.
 		"""
 
-		self.movement = direction.value
+		if not self.movement:
+			self.movement = Movement(direction.value, .25)
 
 	def get_anim_state(self):
 		"""

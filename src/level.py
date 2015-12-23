@@ -53,15 +53,13 @@ class Level:
 		:param dt: The seconds between the current and the previous frame
 		"""
 
-		new_pos = entity.position + entity.movement * dt
+		new_pos = entity.movement.apply(entity.position, dt)
 
 		try:
-			if not self.region[tuple(new_pos)].block.solid:
-				entity.position = new_pos
-				entity.movement -= dt * entity.movement
-				entity.movement = max(Vec(0, 0), entity.movement)
+			if self.region[tuple(entity.movement.end_pos)].block.solid:
+				entity.movement.terminate()
 			else:
-				entity.movement = Vec(0, 0)
+				entity.position = new_pos
 		except IndexError:
 			pass
 

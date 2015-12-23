@@ -12,12 +12,11 @@ class Movement:
 	Linear interpolation movement between two given positions.
 	"""
 
-	def __init__(self, vec, duration=time(seconds=1)):
-		if duration == sf.Time.ZERO:
-			self.duration = time(seconds=1)
-
-		self.speed = Vec(*vec) / duration.milliseconds
+	def __init__(self, vec, duration=1):
+		self.speed = Vec(*vec) / duration
 		self.duration = duration
+		self.time = 0
+		self.start_pos = None
 
 	def __repr__(self):
 		return '<Movement {} ending in {}>'.format(self.speed, self.duration)
@@ -41,7 +40,11 @@ class Movement:
 			return cls(delta, duration)
 
 	def __bool__(self):
-		return bool(self.speed)
+		return bool(self.speed * (self.duration - self.time))
+
+	@property
+	def end_pos(self):
+		return self.start_pos + self.speed * self.duration
 
 	def apply(self, pos, dt):
 		"""
@@ -52,15 +55,22 @@ class Movement:
 		:param dt: The time between the current and the previous frame
 		"""
 
-		pos.x, pos.y = pos + self.speed * self.duration.milliseconds
-		self.duration = max(self.duration - dt, sf.Time.ZERO)
+		if self.start_pos is None:
+			self.start_pos = pos
+
+		if self.time < self.duration:
+			self.time += dt
+		elif self.time > self.duration:
+			self.time = self.duration
+
+		return self.start_pos + self.speed * self.time
 
 	def terminate(self):
 		"""
 		Stop the movement.
 		"""
 
-		self.duration = sf.Time.ZERO
+		self.duration = 0
 		self.speed = Vec(0, 0)
 
 	def copy(self):

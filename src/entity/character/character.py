@@ -11,5 +11,7 @@ class Character(Entity):
 		self.facing = Direction.down
 
 	def move(self, direction):
+		if not self.movement:
+			self.facing = direction
+
 		super().move(direction)
-		self.facing = direction
