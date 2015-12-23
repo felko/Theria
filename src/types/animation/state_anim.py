@@ -25,7 +25,7 @@ class StateAnim:
 		self.state = default
 
 	@classmethod
-	def load_from_dir(cls, path, default=None):
+	def load_from_dir(cls, path, default=None, interval=0):
 		"""
 		Loads a MultiAnimation object from a directory.
 
@@ -55,7 +55,7 @@ class StateAnim:
 		:return: MultiAnimation object
 		"""
 
-		nested_mapping = _load_mapping(path)
+		nested_mapping = _load_mapping(path, interval)
 		flattened_mapping = flatten_dict(nested_mapping)
 
 		return cls(flattened_mapping, default)
@@ -69,7 +69,13 @@ class StateAnim:
 		:return: A sf.Texture object
 		"""
 
-		self.state = state
+		if self.state != state:
+			previous = self.frame_mapping[self.state]
+
+			if isinstance(previous, Animation):
+				previous.reset()
+
+			self.state = state
 
 		anim = self.frame_mapping[state]
 		if isinstance(anim, Animation):
@@ -78,7 +84,7 @@ class StateAnim:
 			return anim
 
 
-def _load_mapping(path):
+def _load_mapping(path, interval):
 	"""
 	Recursive helper function for class method StateAnim.load_from_dir.
 
@@ -94,11 +100,11 @@ def _load_mapping(path):
 
 		if os.path.isdir(sub_path):
 			if any(os.path.isdir(os.path.join(sub_path, d)) for d in os.listdir(sub_path)):
-				mapping[state_name] = _load_mapping(sub_path)
+				mapping[state_name] = _load_mapping(sub_path, interval)
 			elif all(name.split('.')[0].isdigit() for name in map(os.path.basename, os.listdir(sub_path))):
-				mapping[state_name] = Animation.load_from_dir(sub_path)
+				mapping[state_name] = Animation.load_from_dir(sub_path, interval)
 			else:
-				mapping[state_name] = _load_mapping(sub_path)
+				mapping[state_name] = _load_mapping(sub_path, interval)
 		else:
 			mapping[state_name.split('.')[0]] = sf.Texture.from_file(sub_path)
 

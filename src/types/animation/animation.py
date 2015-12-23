@@ -64,3 +64,7 @@ class Animation:
 
 		return self.frames[self.index]
 
+	def reset(self):
+		self.time = 0
+		self.index = 0
+

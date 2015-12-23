@@ -15,7 +15,10 @@ class Entity:
 		self.animation = anim
 		self.movement = idle
 		self.texture_offset = texture_offset
-		self.time = 0
+		self.dt = 0
+
+		if isinstance(anim, StateAnim):
+			self.animation.state = self.get_anim_state()
 
 	def update(self, dt):
 		"""
@@ -24,7 +27,7 @@ class Entity:
 		:param dt: Time between the current and the previous frame.
 		"""
 
-		self.time += dt
+		self.dt = dt
 
 	def move(self, direction):
 		"""
@@ -34,7 +37,7 @@ class Entity:
 		"""
 
 		if not self.movement:
-			self.movement = Movement(direction.value, .25)
+			self.movement = Movement(direction.value, ENTITY_MOVE_DURATION)
 
 	def get_anim_state(self):
 		"""
@@ -57,9 +60,9 @@ class Entity:
 			state = self.get_anim_state()
 
 			if isinstance(self.animation, Animation):
-				return self.animation.get_frame(self.time)
+				return self.animation.get_frame(self.dt)
 			elif isinstance(self.animation, StateAnim):
-				return self.animation.get_frame(state, self.time)
+				return self.animation.get_frame(state, self.dt)
 
 	def get_sprite(self):
 		"""

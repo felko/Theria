@@ -6,8 +6,9 @@ from enum import Enum
 from .character import Character
 from ...types.animation.state_anim import StateAnim
 from .. import *
+from ...constants import *
 
-PLAYER_ANIM = StateAnim.load_from_dir('src/assets/sprites/player')
+PLAYER_ANIM = StateAnim.load_from_dir('src/assets/sprites/player', interval=PLAYER_ANIM_INTERVAL)
 
 
 class Player(Character):

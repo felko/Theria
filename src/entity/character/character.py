@@ -7,8 +7,8 @@ from ...types import *
 
 class Character(Entity):
 	def __init__(self, pos, anim, texture_offset=Vec(0, 0)):
-		super().__init__(pos, anim, texture_offset)
 		self.facing = Direction.down
+		super().__init__(pos, anim, texture_offset)
 
 	def move(self, direction):
 		if not self.movement:
