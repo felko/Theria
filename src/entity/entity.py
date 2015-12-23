@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from sfml import sf
-
 from ..movement import *
 from ..types import *
-from ..types.animation import *
+from ..animation import *
 from ..constants import *
 
 

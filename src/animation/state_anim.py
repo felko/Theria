@@ -4,10 +4,11 @@
 __all__ = ['StateAnim']
 
 import os
+
 from sfml import sf
 
 from .animation import Animation
-from ...helper import flatten_dict
+from ..helper import flatten_dict
 
 
 class StateAnim:
