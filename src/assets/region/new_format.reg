@@ -1,0 +1,11 @@
+# Testing the new region format
+
+region size is (width: 64, height: 32)
+
+define block %ground as grass
+
+fill map with %ground
+fill (x: 13, y: 4, w: 9, h: 13)      with sand   # Rectangle from position and size
+fill (x: 14, y: 5) to (x: 22, y: 17) with water  # Rectangle from two positions
+
+set block (x: ) as stone

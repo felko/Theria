@@ -9,9 +9,25 @@ class Rect:
 	Rectangle in 2D space.
 	"""
 
-	def __init__(self, pos, size):
-		self.x, self.y = pos
-		self.w, self.h = size
+	def __init__(self, *args, **kwds):
+		if len(args) == 4:
+			self.x, self.y, self.w, self.h = args
+		elif len(args) == 2:
+			pos, size = args
+			self.x, self.y = pos
+			self.w, self.h = size
+		elif len(args) == 0:
+			if len(kwds) == 4:
+				self.x, self.y = kwds['x'], kwds['y']
+				self.w, self.h = kwds['w'], kwds['h']
+			elif len(kwds) == 2:
+				self.x, self.y = kwds['pos']
+				self.w, self.h = kwds['size']
+			else:
+				raise ValueError('Not enough keyword arguments')
+		else:
+			raise ValueError('Not enough positional arguments')
+
 
 	@classmethod
 	def link(cls, a, b):
