@@ -53,7 +53,7 @@ class Game:
 			elif isinstance(event, sf.KeyEvent):
 				if event.pressed:
 					self.pressed_keys.add(event.code)
-				elif event.released:
+				elif event.released and event.code in self.pressed_keys:
 					self.pressed_keys.remove(event.code)
 
 	def update(self, dt):
