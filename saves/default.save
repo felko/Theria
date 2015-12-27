@@ -3,6 +3,10 @@
         "player": {
             "x": 6,
             "y": 8},
-        "region": "src/assets/region/test.reg"
+        "region": {
+            "file": "src/assets/region/test.reg",
+            "biome_x": 0,
+            "biome_y": 0
+        }
     }
 }

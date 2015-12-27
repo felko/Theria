@@ -4,10 +4,7 @@
 import time
 import json
 
-from sfml import sf
-
 from .level import Level
-from .entity.character.player import Player
 from .types import *
 from .constants import *
 

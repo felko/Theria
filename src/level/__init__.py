@@ -2,13 +2,11 @@
 # coding: utf-8
 
 import itertools
+import json
 
-from sfml import sf
-
-import src.movement as movement
-from .region import Region
-from .entity.character.player import Player
-from .types import *
+from ..entity.character.player import Player
+from .biome import *
+from ..types import *
 
 
 class Level:
@@ -26,9 +24,28 @@ class Level:
 		:return: The loaded Level object.
 		"""
 
-		region = Region.load_from_file(data['region'])
+		with open(data['region']['file']) as level_file:
+			level_data = json.load(level_file)
+
+		reg_x, reg_y = data['region']['biome_x'], data['region']['biome_y']
+		region_data = level_data[reg_y][reg_x]
+
+		region = Biome.load_json(region_data)
 		player = Player.load_json(data['player'])
 		return cls(region, player)
+
+	@classmethod
+	def generate(cls, width, height):
+		reg = Plain.generate(width, height)
+
+		pos = (random.randrange(reg.width), random.randrange(reg.height))
+		while reg[pos].block.solid:
+			pos = (random.randrange(reg.width), random.randrange(reg.height))
+
+		player = Player(pos)
+		lvl = cls(reg, player)
+
+		return lvl
 
 	def update(self, dt):
 		"""
@@ -65,7 +82,7 @@ class Level:
 
 	def draw(self, target):
 		"""
-		Draws the region and the entities to the given render window.
+		Draws the level and the entities to the given render window.
 
 		:param target: sf.RenderWindow to draw on
 		"""

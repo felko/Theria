@@ -2,41 +2,31 @@
 # coding: utf-8
 
 import itertools
+
 import numpy as np
-import json
 
-from src.region.block import Block
-from src.region.tile import Tile
-
-from ..types import *
-from ..constants import *
+from ..block import Block
+from ..tile import Tile
+from ...types import *
 
 
-class Region(np.ndarray):
+class Biome(np.ndarray):
 	def __new__(cls, width, height):
 		reg = super().__new__(cls, (width, height), dtype=Tile)
-
-		coords = itertools.product(range(width), range(height))
-
-		for pos in coords:
-			reg[pos] = Tile(pos, Block.registered['air'])
-
+		reg.width, reg.height = width, height
+		reg.fill(Block.registered['air'])
 		return reg
 
-	def __init__(self, width, height):
-		self.width, self.height = width, height
-
 	@classmethod
-	def load_from_file(cls, path):
-		with open(path) as file:
-			data = json.load(file)
-			return cls.load_json(data)
+	def generate(cls, width, height):
+		return cls(width, height)
 
-	@classmethod
-	def load_json(cls, data):
+	@staticmethod
+	def load_json(data):
 		width = data['width']
 		height = data['height']
-		reg = cls(width, height)
+		biome_type_name = data['type']
+		reg = get_biome(biome_type_name)(width, height)
 
 		tiles = data['tiles']
 
@@ -55,10 +45,16 @@ class Region(np.ndarray):
 
 		return reg
 
-	@property
-	def size(self):
-		return self.width, self.height
+	def fill(self, block):
+		coords = itertools.product(range(self.width), range(self.height))
 
-	@size.setter
-	def size(self, value):
-		self.reshape(value)
+		for pos in coords:
+			self[pos] = Tile(pos, block)
+
+
+def get_biome(name):
+	for biome in Biome.__subclasses__():
+		if biome.__name__ == name:
+			return biome
+
+	return Biome

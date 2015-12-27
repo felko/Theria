@@ -9,7 +9,7 @@ from ..constants import *
 
 class Entity:
 	def __init__(self, pos, anim, texture_offset=Vec(0, 0)):
-		self.position = pos
+		self.position = Vec(*pos)
 		self.animation = anim
 		self.movement = idle
 		self.texture_offset = texture_offset
@@ -76,7 +76,7 @@ class Entity:
 
 		texture = self.get_texture()
 		sprite = sf.Sprite(texture)
-		sprite.position = self.position * TILE_SIZE
+		sprite.position = tuple(self.position * TILE_SIZE)
 		return sprite
 
 	def draw(self, target):

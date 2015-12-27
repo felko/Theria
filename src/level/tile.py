@@ -9,7 +9,7 @@ from ..constants import *
 
 class Tile:
 	def __init__(self, position, block):
-		self.position = position
+		self.position = Vec(*position)
 		self.block = block
 
 	def __repr__(self):
@@ -17,5 +17,5 @@ class Tile:
 
 	def get_sprite(self):
 		sprite = sf.Sprite(self.block.texture)
-		sprite.position = self.position * TILE_SIZE
+		sprite.position = tuple(self.position * TILE_SIZE)
 		return sprite
