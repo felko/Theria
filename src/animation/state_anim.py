@@ -5,7 +5,7 @@ __all__ = ['StateAnim']
 
 import os
 
-from sfml import sf
+import sfml as sf
 
 from .animation import Animation
 from ..helper import flatten_dict

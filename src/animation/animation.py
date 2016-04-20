@@ -4,7 +4,7 @@
 import os
 import glob
 
-from sfml import sf
+import sfml as sf
 
 
 class Animation:

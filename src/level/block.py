@@ -5,7 +5,7 @@ import os
 import glob
 import json
 
-from sfml import sf
+import sfml as sf
 
 from ..action import Action
 import src.action as action

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from sfml import sf
+import sfml as sf
 
 
 def sign(x):
